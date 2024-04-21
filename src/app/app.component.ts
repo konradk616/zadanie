@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
   records: EmployeeNetland[] = [];
   filteredRecords: EmployeeNetland[] = [];
   editMode: boolean = false;
+  currentEditRecordIndex: number = 0;
   @ViewChild('modal') private modal: ElementRef;
 
   form: FormGroup;
@@ -36,18 +37,22 @@ export class AppComponent implements OnInit {
     name?: string,
     age?: number,
     isFullTime?: boolean,
-    position?: Position
+    position?: Position,
+    index?: number
   ) {
     if (name) {
       this.f.fullName.setValue(name);
       this.f.age.setValue(age);
       this.f.fullTime.setValue(isFullTime);
       this.f.position.setValue(position);
+      this.editMode = true;
+      this.currentEditRecordIndex = index as number;
     }
     this.modal.nativeElement.setAttribute('style', 'display: block');
   }
 
   closeModal() {
+    this.editMode = false;
     this.modal.nativeElement.setAttribute('style', 'display: none');
   }
 
@@ -59,6 +64,15 @@ export class AppComponent implements OnInit {
     const age = this.f.age.value as number;
     const fullTime = this.f.fullTime.value as boolean;
     const position = this.f.position.value;
+    if (this.editMode) {
+      this.records[this.currentEditRecordIndex].name = fullName;
+      this.records[this.currentEditRecordIndex].age = age;
+      this.records[this.currentEditRecordIndex].isFullTime = fullTime;
+      this.records[this.currentEditRecordIndex].position = position;
+      this.closeModal();
+      return;
+    }
+
     this.records.push({
       name: fullName,
       age: age,
@@ -68,5 +82,9 @@ export class AppComponent implements OnInit {
     this.closeModal();
   }
 
-  startEditMode() {}
+  editRecord() {}
+
+  deleteRecord(index: number) {
+    this.records.splice(index, 1);
+  }
 }

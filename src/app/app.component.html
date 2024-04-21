@@ -34,7 +34,8 @@
                   employee.name,
                   employee.age,
                   employee.isFullTime,
-                  employee.position
+                  employee.position,
+                  $index
                 )
               "
             >
@@ -42,7 +43,7 @@
             </button>
           </td>
           <td>
-            <button>Delete</button>
+            <button (click)="deleteRecord($index)">Delete</button>
           </td>
         </tr>
         }
@@ -77,7 +78,7 @@
         <option>{{ position.value }}</option>
         }
       </select>
-      <button type="submit">Add employee</button>
+      <button type="submit">{{ editMode ? "Edit" : "Add employee" }}</button>
     </form>
   </div>
   <div class="modal-overlay" (click)="closeModal()"></div>

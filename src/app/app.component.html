@@ -1,0 +1,84 @@
+<div class="container">
+  <div class="content">
+    <button class="btn add" (click)="openModal()">+Add Employee</button>
+    <table>
+      <thead>
+        <th>Full name</th>
+        <th>Age</th>
+        <th>Full time</th>
+        <th>Position</th>
+      </thead>
+      <tbody>
+        @for (employee of records; track employee) {
+        <tr>
+          <td>
+            <input [value]="employee.name" [readonly]="true" />
+          </td>
+          <td>
+            <input [value]="employee.age" [readonly]="true" />
+          </td>
+          <td>
+            <input
+              [checked]="employee.isFullTime"
+              type="checkbox"
+              disabled="true"
+            />
+          </td>
+          <td>
+            <input type="text" [value]="employee.position" [readonly]="true" />
+          </td>
+          <td>
+            <button
+              (click)="
+                openModal(
+                  employee.name,
+                  employee.age,
+                  employee.isFullTime,
+                  employee.position
+                )
+              "
+            >
+              Edit
+            </button>
+          </td>
+          <td>
+            <button>Delete</button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="modal-wrapper" #modal>
+  <div class="modal">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <label for="fullname">Full Name</label>
+      <input
+        formControlName="fullName"
+        id="fullname"
+        type="text"
+        placeholder="Full name..."
+      />
+      <label for="age">Age</label>
+      <input
+        formControlName="age"
+        id="age"
+        type="number"
+        min="0"
+        step="0"
+        placeholder="18"
+      />
+      <label for="fulltime">Full time</label>
+      <input formControlName="fullTime" id="fulltime" type="checkbox" />
+      <label for="position">Position</label>
+      <select formControlName="position" id="position">
+        @for (position of Position | keyvalue; track position) {
+        <option>{{ position.value }}</option>
+        }
+      </select>
+      <button type="submit">Add employee</button>
+    </form>
+  </div>
+  <div class="modal-overlay" (click)="closeModal()"></div>
+</div>

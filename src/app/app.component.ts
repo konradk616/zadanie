@@ -82,8 +82,6 @@ export class AppComponent implements OnInit {
     this.closeModal();
   }
 
-  editRecord() {}
-
   deleteRecord(index: number) {
     this.records.splice(index, 1);
   }
